@@ -1,0 +1,7 @@
+Metric,Value,Baseline,Notes
+Running Distance (Km),5,3,Average male baseline
+Plank Time (Seconds),120,90,Average male baseline
+Mental Focus Duration (Minutes),30,25,Average male baseline
+Stress Recovery Time (Minutes),5,10,Lower is better
+Sleep Quality (Score),85,100,Tracked by device
+Step Counts (Weekly Avg),70000,56000,Recommended average is 8k/day
