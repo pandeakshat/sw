@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 from pydantic import BaseModel
+from fastapi.responses import JSONResponse
+import json
 
 app = FastAPI()
 
@@ -12,6 +14,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
 
 # Constants class (unchanged)
 class Constants:
@@ -118,6 +122,31 @@ class Stat(BaseModel):
     name: str
     value: float
     breakdown: dict
+
+
+def load_json(file_name):
+    try:
+        with open(file_path, "r") as file:
+            return json.load(file)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="File not found")
+
+@app.get("/projects")
+async def get_projects():
+    return load_json("data/projects.json")
+
+@app.get("/skills")
+async def get_skills():
+    return load_json("data/skills.json")
+
+@app.get("/status-effects")
+async def get_status_effects():
+    return load_json("data/status_effects.json")
+
+@app.get("/campaigns")
+async def get_campaigns():
+    return load_json("data/campaigns.json")
+
 
 @app.get("/stats/{stat_name}", response_model=Stat)
 async def get_stat(stat_name: str):

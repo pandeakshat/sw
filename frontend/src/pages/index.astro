@@ -4,7 +4,10 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { StatDrawer } from '@/components/StatDrawer.tsx';
 import {Header} from '@/components/Header';
 import {ExperienceBar} from '@/components/Experience';
-import { Project } from '@/components/Journey';
+import Project from '@/components/Project';
+import Skills from '@/components/Skills.tsx';
+import StatusEffects from '@/components/StatusEffects.tsx';
+import Storyline from '@/components/Storyline.tsx';
 
 const attributes = ["Strength", "Intelligence", "Resilience", "Creativity", "Luck"];
 
@@ -44,9 +47,13 @@ for (const attr of attributes) {
       <div class="mb-10">
       <ExperienceBar client:load/>
     </div>
-    <div class="mb-10">
-      <Project client:load/>
+    <div class="flex gap-4 justify-center">
+      <Project client:load />
+      <Skills client:load />
+      <StatusEffects client:load />
+      <Storyline client:load />
     </div>
+
     </section>
   </div>
 </BaseLayout>
