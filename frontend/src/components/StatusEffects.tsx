@@ -1,15 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
-  Sheet,
-  SheetTrigger,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetFooter,
-  SheetClose,
-  SheetDescription,
+  Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter, SheetClose,
 } from '@/components/ui/sheet';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
 
 export default function StatusEffects() {
   const [statuses, setStatuses] = useState([]);
@@ -29,19 +24,22 @@ export default function StatusEffects() {
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Status Effects</SheetTitle>
-          <SheetDescription>Current active effects on your stats</SheetDescription>
+          <SheetDescription>Active status effects influencing your attributes.</SheetDescription>
         </SheetHeader>
-        <div className="py-4">
-          {statuses.map((status) => (
-            <div key={status.name} className="mb-4 border-b pb-2">
-              <h2 className="font-semibold text-lg">{status.name} ({status.grade})</h2>
-              <p>{status.description}</p>
-              <p className="italic">
-                {status['attribute affected']}: {status.value}
-              </p>
-            </div>
-          ))}
-        </div>
+        <ScrollArea className="h-[400px] rounded-md border my-4">
+          <div className="p-4">
+            {statuses.map((status, idx) => (
+              <div key={idx}>
+                <h2 className="font-semibold text-lg">{status.name} ({status.grade})</h2>
+                <p>{status.description}</p>
+                <p className="italic">
+                  {status['attribute affected']}: {status.value}
+                </p>
+                <Separator className="my-3" />
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
         <SheetFooter>
           <SheetClose asChild>
             <Button variant="outline">Close</Button>

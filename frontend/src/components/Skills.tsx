@@ -1,15 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
-  Sheet,
-  SheetTrigger,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetFooter,
-  SheetClose,
-  SheetDescription,
+  Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter, SheetClose,
 } from '@/components/ui/sheet';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
 
 export default function Skills() {
   const [skills, setSkills] = useState([]);
@@ -31,17 +26,20 @@ export default function Skills() {
           <SheetTitle>Your Skills & Talents</SheetTitle>
           <SheetDescription>Overview of your skills and talents</SheetDescription>
         </SheetHeader>
-        <div className="py-4">
-          {skills.map((skill) => (
-            <div key={skill.name} className="mb-4 border-b pb-2">
-              <h2 className="font-semibold text-lg">{skill.name} ({skill.grade})</h2>
-              <p>{skill.description}</p>
-              <p className="italic">
-                {skill['attribute affected']}: {skill.value}
-              </p>
-            </div>
-          ))}
-        </div>
+        <ScrollArea className="h-[400px] rounded-md border my-4">
+          <div className="p-4">
+            {skills.map((skill, idx) => (
+              <div key={idx}>
+                <h2 className="font-semibold text-lg">{skill.name} ({skill.grade})</h2>
+                <p>{skill.description}</p>
+                <p className="italic">
+                  {skill['attribute affected']}: {skill.value}
+                </p>
+                <Separator className="my-3" />
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
         <SheetFooter>
           <SheetClose asChild>
             <Button variant="outline">Close</Button>

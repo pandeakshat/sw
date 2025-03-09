@@ -1,10 +1,37 @@
 [
-    {
-      "name": "Data Science",
-      "description": "Predictive analytics & modeling",
-      "grade": "A",
-      "attribute affected": "Intelligence",
-      "value": 90
-    }
-  ]
-  
+  {
+    "name": "Mystic Empathy",
+    "description": "The ability to deeply understand and connect with others' emotions and spiritual states beyond conventional empathy.",
+    "grade": "S",
+    "attribute affected": "Intelligence",
+    "value": 95
+  },
+  {
+    "name": "Critical Insight",
+    "description": "A talent for profound analysis and intuition, enabling one to see the deeper truths and solutions in complex situations.",
+    "grade": "S",
+    "attribute affected": "Intelligence",
+    "value": 95
+  },
+  {
+    "name": "Lyrical Wordsmith",
+    "description": "A talent for profound expression and poetic articulation, capturing deep emotional and intellectual truths.",
+    "grade": "A",
+    "attribute affected": "Creativity",
+    "value": 85
+  },
+  {
+    "name": "Lyrical Wordsmith",
+    "description": "A talent for profound expression and poetic articulation, capturing deep emotional and intellectual truths.",
+    "grade": "A",
+    "attribute affected": "Creativity",
+    "value": 85
+  },
+  {
+    "name": "Eclipsed Soul",
+    "description": "A state where one's true essence is overshadowed by external influences or internal struggles, seeking light.",
+    "grade": "A",
+    "attribute affected": "Resilience",
+    "value": 80
+  }
+]

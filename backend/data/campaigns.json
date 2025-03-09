@@ -1,13 +1,27 @@
 [
-    {
-      "name": "Project Alpha",
-      "description": "AI-driven life tracker",
-      "progress": 75
-    },
-    {
-      "name": "DEX Development",
-      "description": "Blockchain decentralized exchange",
-      "progress": 50
-    }
-  ]
-  
+  {
+    "name": "UK Chronicles",
+    "description": "Master's Degree, Origin for EXP-ER business, Odyssey (In Progress)",
+    "progress": 70
+  },
+  {
+    "name": "Indian Chronicles",
+    "description": "Birthplace, Family, Education",
+    "progress": 100
+  },
+  {
+    "name": "European Chronicles",
+    "description": "Future Journey in Europe",
+    "progress": 0
+  },
+  {
+    "name": "Australian Chronicles",
+    "description": "Future Business Ventures in Australia",
+    "progress": 0
+  },
+  {
+    "name": "Web Chronicles",
+    "description": "Future Online Endeavors",
+    "progress": 0
+  }
+]

@@ -1,15 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
-  Sheet,
-  SheetTrigger,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetFooter,
-  SheetClose,
-  SheetDescription,
+  Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter, SheetClose,
 } from '@/components/ui/sheet';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
 
 export default function Storyline() {
   const [campaigns, setCampaigns] = useState([]);
@@ -28,18 +23,21 @@ export default function Storyline() {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Campaign & Storyline</SheetTitle>
-          <SheetDescription>Ongoing storylines and campaigns</SheetDescription>
+          <SheetTitle>Storyline & Campaigns</SheetTitle>
+          <SheetDescription>Current storylines and campaigns in progress.</SheetDescription>
         </SheetHeader>
-        <div className="py-4 space-y-4">
-          {campaigns.map((campaign) => (
-            <div key={campaign.name} className="border p-3 rounded-lg shadow-sm">
-              <h2 className="font-semibold text-lg">{campaign.name}</h2>
-              <p>{campaign.description}</p>
-              <p className="font-medium">Progress: {campaign.progress}%</p>
-            </div>
-          ))}
-        </div>
+        <ScrollArea className="h-[400px] rounded-md border my-4">
+          <div className="p-4">
+            {campaigns.map((campaign, idx) => (
+              <div key={idx}>
+                <h2 className="font-semibold text-lg">{campaign.name}</h2>
+                <p>{campaign.description}</p>
+                <p className="font-medium">Progress: {campaign.progress}%</p>
+                <Separator className="my-3" />
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
         <SheetFooter>
           <SheetClose asChild>
             <Button variant="outline">Close</Button>

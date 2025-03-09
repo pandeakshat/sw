@@ -1,10 +1,37 @@
 [
-    {
-      "name": "Data Science",
-      "description": "Predictive analytics & modeling",
-      "grade": "A",
-      "attribute affected": "Intelligence",
-      "value": 90
-    }
-  ]
-  
+  {
+    "name": "Distracted Mind",
+    "description": "A tendency to wander across thoughts and ideas, often leading to unexpected creativity and insights.",
+    "grade": "S",
+    "attribute affected": "Creativity",
+    "value": 95
+  },
+  {
+    "name": "Hope-ful/less Romantic",
+    "description": "An individual's capacity to oscillate between deep, optimistic love and the despair of unrequited feelings.",
+    "grade": "A",
+    "attribute affected": "Resilience",
+    "value": 85
+  },
+  {
+    "name": "Eternal Debt",
+    "description": "A burden or obligation that feels unending, influencing decisions and actions across a lifetime.",
+    "grade": "B",
+    "attribute affected": "Luck",
+    "value": 70
+  },
+  {
+    "name": "Eclipsed Soul",
+    "description": "A state where one's true essence is overshadowed by external influences or internal struggles, seeking light.",
+    "grade": "A",
+    "attribute affected": "Resilience",
+    "value": 80
+  },
+  {
+    "name": "Echoes of the Past",
+    "description": "The resonance of previous experiences or histories that shape and influence decisions and actions across a lifetime.",
+    "grade": "A",
+    "attribute affected": "Intelligence",
+    "value": 80
+  }
+]
