@@ -1,0 +1,58 @@
+---
+import '../styles/global.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { StatDrawer } from '@/components/StatDrawer.tsx';
+import {Header} from '@/components/Header';
+import {ExperienceBar} from '@/components/Experience';
+import { Project } from '@/components/Journey';
+
+const attributes = ["Strength", "Intelligence", "Resilience", "Creativity", "Luck"];
+
+const allStats = {};
+
+for (const attr of attributes) {
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/stats/${attr.toLowerCase()}`);
+    allStats[attr.toLowerCase()] = await response.json();
+  } catch (error) {
+    console.error(`Failed to fetch ${attr}:`, error);
+    allStats[attr.toLowerCase()] = { name: attr, value: 0, breakdown: { error: "Fetch failed" } };
+  }
+}
+---
+
+<BaseLayout content={{ title: "Status Window - Akshat Pande", description: "My personal stats dashboard" }}>
+  <div class="grid place-items-center h-screen content-center">
+    <!-- <Button>Status Window</Button> -->
+    <!-- <a href="/markdown-page" class="p-4 underline">Markdown is also supported...</a> -->
+    <section class="container mx-auto py-10">
+      <div class="items-center justify-center">
+      </div>
+      <!-- <h1 class="text-center mb-6 text-5xl">Akshat Pande</h1> -->
+      <div class="flex flex-wrap justify-center mb-6 gap-4">
+        <Header client:load/>
+        {attributes.map((attr) => (
+          <div class="flex-1 min-w-[100px] max-w-[250px]">
+            <StatDrawer
+              statName={attr}
+              statData={allStats[attr.toLowerCase()]}
+              client:load
+            />
+          </div>
+        ))}
+      </div>
+      <div class="mb-10">
+      <ExperienceBar client:load/>
+    </div>
+    <div class="mb-10">
+      <Project client:load/>
+    </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .container {
+    max-width: 1200px;
+  }
+</style>

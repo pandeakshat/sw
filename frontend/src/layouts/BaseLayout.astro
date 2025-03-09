@@ -1,0 +1,24 @@
+---
+interface Props {
+  content: {
+    title: string;
+    description?: string;
+  };
+}
+
+const { content } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={content.description || 'Statsphere - Personal Stats Dashboard'} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{content.title}</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
