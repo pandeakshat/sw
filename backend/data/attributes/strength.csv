@@ -1,13 +1,13 @@
 Metric,Value
-Bench Press (Kg),80
-BW PullUps (Rep),20
-BW PushUps (Rep),40
-Barbell Curl (Kg),23
-Shoulder Press (Kg),50
-BW Dips (Rep),15
-Squats (Kg),60
+Bench Press (Kg),90.0
+BW PullUps (Rep),20.0
+BW PushUps (Rep),40.0
+Barbell Curl (Kg),40.0
+Shoulder Press (Kg),60.0
+BW Dips (Rep),15.0
+Squats (Kg),60.0
 Grip Strength,
-Leg Press,130
-Dead Lift,100
-Resting Heart Rate,61 
-BW Plank,75
+Leg Press,130.0
+Dead Lift,110.0
+Resting Heart Rate,61.0
+BW Plank,75.0

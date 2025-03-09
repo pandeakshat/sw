@@ -1,7 +1,7 @@
 Metric,Value,Weightage
-Books Read,4,1
-Courses Completed,3,1
-Certifications Earned,2,2
-Articles Written,4,0.5
-Projects,3,1
+Books Read,4,1.0
+Courses Completed,3,1.0
+Certifications Earned,5,2.0
+Articles Written,7,0.5
+Projects,3,1.0
 Research Papers,1,1.5
