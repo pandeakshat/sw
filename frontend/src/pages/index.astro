@@ -3,7 +3,7 @@ import '../styles/global.css';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { StatDrawer } from '@/components/StatDrawer.tsx';
 import {Header} from '@/components/Header';
-import {ExperienceBar} from '@/components/Experience';
+import ExperienceBar from '@/components/Experience';
 import Project from '@/components/Project';
 import Skills from '@/components/Skills.tsx';
 import StatusEffects from '@/components/StatusEffects.tsx';
@@ -15,7 +15,7 @@ const allStats = {};
 
 for (const attr of attributes) {
   try {
-    const response = await fetch(`http://127.0.0.1:8000/stats/${attr.toLowerCase()}`);
+    const response = await fetch(`http://backend:8000/stats/${attr.toLowerCase()}`);
     allStats[attr.toLowerCase()] = await response.json();
   } catch (error) {
     console.error(`Failed to fetch ${attr}:`, error);

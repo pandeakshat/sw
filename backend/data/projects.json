@@ -1,50 +1,56 @@
 [
-  {
-    "name": "BSE-Simulation",
-    "description": "Robot Trading with BSE",
-    "progress": 50,
-    "link": "#"
-  },
-  {
-    "name": "Carbon Activity",
-    "description": "Carbon Footprint Tracker",
-    "progress": 50,
-    "link": "#"
-  },
-  {
-    "name": "Property NFT",
-    "description": "Property NFT Marketplace",
-    "progress": 50,
-    "link": "#"
-  },
-  {
-    "name": "Music Genre",
-    "description": "Music using Machine Learning & AI",
-    "progress": 50,
-    "link": "#"
-  },
-  {
-    "name": "AnimeWisdomVault",
-    "description": "Anime Quotes Collection",
-    "progress": 50,
-    "link": "#"
-  },
-  {
-    "name": "AnimeWisdomVault",
-    "description": "Anime Quotes Collection",
-    "progress": 50,
-    "link": "#"
-  },
-  {
-    "name": "AnimeWisdomVault",
-    "description": "Anime Quotes Collection",
-    "progress": 50,
-    "link": "#"
-  },
-  {
-    "name": "Cheat Engine",
-    "description": "CheatSheets for Programming Languages and Services",
-    "progress": 50,
-    "link": "#"
-  }
+    {
+        "name": "BSE-Simulation",
+        "description": "Robot Trading with BSE",
+        "progress": 50,
+        "link": "#"
+    },
+    {
+        "name": "Carbon Activity",
+        "description": "Carbon Footprint Tracker",
+        "progress": 50,
+        "link": "#"
+    },
+    {
+        "name": "Property NFT",
+        "description": "Property NFT Marketplace",
+        "progress": 50,
+        "link": "#"
+    },
+    {
+        "name": "Music Genre",
+        "description": "Music using Machine Learning & AI",
+        "progress": 50,
+        "link": "#"
+    },
+    {
+        "name": "AnimeWisdomVault",
+        "description": "Anime Quotes Collection",
+        "progress": 50,
+        "link": "#"
+    },
+    {
+        "name": "Status Window",
+        "description": "Status Window - Gamified Life",
+        "progress": "50",
+        "link": "#"
+    },
+    {
+        "name": "AnimeWisdomVault",
+        "description": "Anime Quotes Collection",
+        "progress": 50,
+        "link": "#"
+    },
+    {
+        "name": "Cheat Engine",
+        "description": "CheatSheets for Programming Languages and Services",
+        "progress": 50,
+        "link": "#"
+    },
+    {
+        "name": "Scribe Solace",
+        "description": "Anonymized Creative Literature Sharing",
+        "progress": "10",
+        "link": "#"
+    }
 ]

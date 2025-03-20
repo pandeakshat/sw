@@ -1,16 +1,27 @@
 "use client"
 
-import * as React from "react"
+import { useState, useEffect } from 'react';
+import { Progress } from '@/components/ui/progress';
 
-import { Progress } from "@/components/ui/progress"
+export default function ExperienceBar() {
+  const [progress, setProgress] = useState(0);
+  const [level, setLevel] = useState(1);
 
-export function ExperienceBar() {
-  const [progress, setProgress] = React.useState(15)
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/experience')
+      .then(res => res.json())
+      .then(data => {
+        setProgress(data.progress_percentage);
+        setLevel(data.current_level);
+      })
+      .catch(err => console.error(err));
+  }, []);
 
-  React.useEffect(() => {
-    const timer = setTimeout(() => setProgress(1), 500)
-    return () => clearTimeout(timer)
-  }, [])
-
-  return <Progress value={progress} className="w" />
+  return (
+    <div className="w-full">
+      <div className="text-center mb-2">Level: {level}</div>
+      <Progress value={progress} className="w-full" />
+      <div className="mt-1 text-center">{progress.toFixed(2)}%</div>
+    </div>
+  );
 }
