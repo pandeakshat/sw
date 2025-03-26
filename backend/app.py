@@ -1,13 +1,13 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-import pandas as pd
-from pydantic import BaseModel
 from fastapi.responses import JSONResponse
-import json
+from pydantic import BaseModel
+import pandas as pd
+import sqlite3
 
 app = FastAPI()
 
-# CORS setup
+# Allow frontend dev port
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:4321"],
@@ -15,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Constants
+# Global Constants
 class Constants:
     name = 'Akshat Pande'
     weight = 77.15
@@ -26,7 +26,11 @@ class Constants:
 
 c = Constants()
 
-# ----- Attribute Calculations (unchanged) -----
+# DB Connection Utility
+def get_db_connection():
+    return sqlite3.connect("status_window.db")
+
+# Attribute calculation logic (same as yours)
 def calculate_strength(row, constants):
     baselines = {
         "Bench Press (Kg)": constants.weight,
@@ -42,8 +46,8 @@ def calculate_strength(row, constants):
         "Resting Heart Rate": 60,
         "BW Plank": 120,
     }
-    metric = row["Metric"]
-    value = row["Value"]
+    metric = row["metric"]
+    value = row["value"]
     baseline = baselines.get(metric, 0)
     height_adjustment = (constants.height - 175) * 0.001
     age_adjustment = (constants.age - 25) * 0.01
@@ -60,101 +64,78 @@ def calculate_strength(row, constants):
     )
 
 def calculate_intelligence(row):
-    return row["Value"] * row["Weightage"]
+    return row["value"] * row.get("weightage", 1)
 
 def calculate_resilience(row, constants):
-    metric = row["Metric"]
-    value = row["Value"]
-    baseline = row["Baseline"]
+    value = row["value"]
+    baseline = row.get("baseline", 1)
     age_adjustment = (constants.age - 25) * 0.01
-    if metric == "Stress Recovery Time (Minutes)":
+    if row["metric"] == "Stress Recovery Time (Minutes)":
         return (baseline / value) * (1 - age_adjustment) if value > 0 else 0
     return (value / baseline) * (1 - age_adjustment) if baseline > 0 else 0
 
 def calculate_creativity(row):
-    return row["Value"] * row["Weightage"]
+    return row["value"] * row.get("weightage", 1)
 
 def calculate_luck(row):
-    return row["Value"]
+    return row["value"]
 
-# ----- Calculate Total Score -----
-def calculate_total_score(file_path, attribute, constants):
-    df = pd.read_csv(file_path)
-    df["Value"] = pd.to_numeric(df["Value"], errors="coerce")
-    df["Baseline"] = pd.to_numeric(df.get("Baseline", None), errors="coerce")
-    df["Weightage"] = pd.to_numeric(df.get("Weightage", None), errors="coerce")
+# Fetch and calculate from DB
+def calculate_total_score(attribute, constants):
+    conn = get_db_connection()
+    df = pd.read_sql_query(
+        f"SELECT * FROM attributes_log WHERE attribute = ?",
+        conn,
+        params=(attribute.lower(),)
+    )
+    conn.close()
 
-    if attribute == "Strength":
-        df["Score"] = df.apply(calculate_strength, axis=1, constants=constants)
-    elif attribute == "Intelligence":
-        df["Score"] = df.apply(calculate_intelligence, axis=1)
-    elif attribute == "Resilience":
-        df["Score"] = df.apply(calculate_resilience, axis=1, constants=constants)
-    elif attribute == "Creativity":
-        df["Score"] = df.apply(calculate_creativity, axis=1)
-    elif attribute == "Luck":
-        df["Score"] = df.apply(calculate_luck, axis=1)
+    if df.empty:
+        return 0, {"error": "No data found"}
+
+    df["value"] = pd.to_numeric(df["value"], errors="coerce")
+    df["baseline"] = pd.to_numeric(df.get("baseline", None), errors="coerce")
+    df["weightage"] = pd.to_numeric(df.get("weightage", None), errors="coerce")
+
+    if attribute.lower() == "strength":
+        df["score"] = df.apply(calculate_strength, axis=1, constants=constants)
+    elif attribute.lower() == "intelligence":
+        df["score"] = df.apply(calculate_intelligence, axis=1)
+    elif attribute.lower() == "resilience":
+        df["score"] = df.apply(calculate_resilience, axis=1, constants=constants)
+    elif attribute.lower() == "creativity":
+        df["score"] = df.apply(calculate_creativity, axis=1)
+    elif attribute.lower() == "luck":
+        df["score"] = df.apply(calculate_luck, axis=1)
     else:
-        return 0, {"error": f"Stat not found"}
+        return 0, {"error": "Invalid attribute"}
 
-    breakdown = df[["Metric", "Score"]].set_index("Metric").to_dict()["Score"]
-    return df["Score"].sum(), breakdown
+    breakdown = df[["metric", "score"]].set_index("metric").to_dict()["score"]
+    return df["score"].sum(), breakdown
 
-# Attribute lookups
-attributes = {
-    "strength": "data/attributes/strength.csv",
-    "intelligence": "data/attributes/intelligence.csv",
-    "resilience": "data/attributes/resilience.csv",
-    "creativity": "data/attributes/creativity.csv",
-    "luck": "data/attributes/luck.csv",
-}
-
+# Pydantic model
 class Stat(BaseModel):
     name: str
     value: float
     breakdown: dict
 
-def load_json(file_path):
-    try:
-        with open(file_path, "r") as file:
-            return json.load(file)
-    except FileNotFoundError:
-        raise HTTPException(status_code=404, detail="File not found")
-
-@app.get("/projects")
-async def get_projects():
-    return load_json("data/projects.json")
-
-@app.get("/skills")
-async def get_skills():
-    return load_json("data/skills.json")
-
-@app.get("/status-effects")
-async def get_status_effects():
-    return load_json("data/status_effects.json")
-
-@app.get("/campaigns")
-async def get_campaigns():
-    return load_json("data/campaigns.json")
-
-@app.get("/")  # Add this route
-def read_root():
-    return {"message": "Backend is running!"}
+# Endpoints
+@app.get("/")
+def root():
+    return {"message": "Status Window API is running!"}
 
 @app.get("/stats/{stat_name}", response_model=Stat)
-async def get_stat(stat_name: str):
-    file_path = attributes.get(stat_name.lower())
-    if not file_path:
-        return Stat(name=stat_name, value=0, breakdown={"error": "Stat not found"})
-    total_score, breakdown = calculate_total_score(file_path, stat_name.capitalize(), c)
-    return Stat(name=stat_name, value=round(total_score, 3), breakdown=breakdown)
+def get_stat(stat_name: str):
+    total, breakdown = calculate_total_score(stat_name, c)
+    return Stat(name=stat_name.capitalize(), value=round(total, 2), breakdown=breakdown)
 
-# ----- Experience Calculation Endpoint -----
 @app.get("/experience")
-async def get_experience():
-    df = pd.read_csv("data/experience_log.csv")
+def get_experience():
+    conn = get_db_connection()
+    df = pd.read_sql_query("SELECT * FROM experience_log", conn)
+    conn.close()
 
-    total_exp = int(df["experience"].sum())  # ensures pure Python int
+    total_exp = int(df["experience"].sum())
 
     def exp_for_level(lvl):
         return 100 * (lvl - 1)
@@ -167,10 +148,6 @@ async def get_experience():
     next_exp = exp_for_level(level + 1)
     progress = float(round(((total_exp - current_exp) / (next_exp - current_exp)) * 100, 2))
 
-    # Example: you want the sum of some columns? Just cast them to Python int:
-    # attributes_sum_np = df[["some_column"]].sum()
-    # attributes_sum = {k: int(v) for k, v in attributes_sum_np.items()}
-
     return {
         "current_level": level,
         "current_experience": total_exp,
@@ -178,6 +155,36 @@ async def get_experience():
         "next_level_exp": next_exp,
         "progress_percentage": progress
     }
+
+@app.get("/projects")
+def get_projects():
+    conn = get_db_connection()
+    df = pd.read_sql_query("SELECT * FROM projects", conn)
+    conn.close()
+    return df.to_dict(orient="records")
+
+@app.get("/skills")
+def get_skills():
+    conn = get_db_connection()
+    df = pd.read_sql_query("SELECT * FROM skills", conn)
+    conn.close()
+    return df.to_dict(orient="records")
+
+@app.get("/status-effects")
+def get_status_effects():
+    conn = get_db_connection()
+    df = pd.read_sql_query("SELECT * FROM status_effects", conn)
+    conn.close()
+    return df.to_dict(orient="records")
+
+@app.get("/campaigns")
+def get_campaigns():
+    conn = get_db_connection()
+    df = pd.read_sql_query("SELECT * FROM campaigns", conn)
+    conn.close()
+    return df.to_dict(orient="records")
+
+# Run the app
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
